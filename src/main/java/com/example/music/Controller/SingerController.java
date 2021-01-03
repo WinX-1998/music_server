@@ -6,7 +6,10 @@ import com.example.music.VO.Response;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -57,7 +60,7 @@ public class SingerController {
         }
 
         /**
-        * @Description: 根据主键查询歌手
+        *  根据主键查询歌手
         */
         @GetMapping("/selectSingerById")
         public Singer selectSingerById(@RequestParam("id") String id){
@@ -67,7 +70,7 @@ public class SingerController {
         }
 
         /**
-         * @Description: 查找所有歌手
+         *  查找所有歌手
          */
         @GetMapping("/selectAllSinger")
         public List<Singer> selectAllSinger(){
@@ -92,6 +95,43 @@ public class SingerController {
         int querySex = Integer.parseInt(sex);
         List<Singer> singers = singerService.selectBySex(querySex);
         return singers;
+    }
+
+    /**
+     * 更新歌手头像
+     */
+    @PostMapping(value="/updateSingerAcator")
+    public Response updateSingerAvator(@RequestParam("file")MultipartFile avatorFile,@RequestParam("id")int id){
+        if(avatorFile.isEmpty()){
+            return new Response(500,"文件上传失败",null);
+        }
+        //文件名=当前时间到毫秒+原来的文件名
+        String fileName=System.currentTimeMillis()+avatorFile.getOriginalFilename();
+        //文件路径
+        String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"img"
+                +System.getProperty("file.separator")+"singerPic";
+        //如果文件路径不存在，新增该路径
+        File file=new File(filePath);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        //实际的文件地址
+        File dest=new File(filePath+System.getProperty("file.separator")+fileName);
+        //存储到数据库里相对的文件地址
+        String storeAvatorPath="/img/singerPic/"+fileName;
+        try {
+            avatorFile.transferTo(dest);
+            Singer singer = singerService.selectById(id);
+            singer.setPic(storeAvatorPath);
+            int i = singerService.update(singer);
+            if(i!=0){
+                return new Response(200,"文件上传成功",storeAvatorPath);
+            }else{
+                return new Response(500,"文件上传失败",null);
+            }
+        } catch (IOException e) {
+            return new Response(500,"文件上传失败"+e.getMessage(),null);
+        }
     }
 
 

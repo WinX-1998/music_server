@@ -55,6 +55,11 @@ public class SingerServiceImpl implements SingerService {
     }
 
     @Override
+    public int delectByIds(List<Integer> ids) {
+        return singerMapper.deleteBatchIds(ids);
+    }
+
+    @Override
     public List<Singer> selectAllSinger() {
         List<Singer> singers = singerMapper.selectList(null);
         return singers;

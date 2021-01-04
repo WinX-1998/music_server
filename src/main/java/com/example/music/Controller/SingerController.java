@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class SingerController {
         /**
          * 更新歌手
          */
-        @PostMapping("/update")
+        @PostMapping("/updateSinger")
         public Response updateSinger(@RequestBody Singer singer){
             Singer querySinger = singerService.selectById(singer.getId());
             if(querySinger!=null){
@@ -96,6 +97,36 @@ public class SingerController {
         List<Singer> singers = singerService.selectBySex(querySex);
         return singers;
     }
+
+    /**
+     * 根据id删除歌手
+     */
+    @GetMapping("/deleteSinger/{id}")
+    public Response deleteSinger(@PathVariable(value="id")int id){
+        int delete = singerService.delete(id);
+        if(delete!=0){
+            return new Response(200,"删除成功",null);
+        }else{
+            return new Response(500,"删除失败",null);
+        }
+    }
+
+    @GetMapping("/deleteSingers/{ids}")
+    public Response deleteSingers(@PathVariable(value = "ids")String ids){
+        String[] split = ids.split(",");
+        List<Integer>list=new ArrayList<Integer>();
+        for(int i=0;i<split.length;i++){
+            int parseInt = Integer.parseInt(split[i]);
+            list.add(parseInt);
+        }
+        int i = singerService.delectByIds(list);
+        if(i!=0){
+            return new Response(200,"删除成功",null);
+        }else{
+            return new Response(500,"删除失败",null);
+        }
+    }
+
 
     /**
      * 更新歌手头像

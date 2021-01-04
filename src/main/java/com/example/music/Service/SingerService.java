@@ -34,6 +34,11 @@ public interface SingerService {
     public Singer selectById(Integer id);
 
     /**
+     * 批量删除歌手
+     */
+    public int delectByIds(List<Integer> ids);
+
+    /**
      * 查询所有歌手
      */
     public List<Singer> selectAllSinger();

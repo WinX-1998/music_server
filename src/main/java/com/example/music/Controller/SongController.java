@@ -32,39 +32,6 @@ public class SongController {
     @Autowired
     private SongService songService;
 
-   /* @PostMapping("/addSong")
-    public Response addSong(Song song, @RequestParam("file")MultipartFile mpfile){
-        if(mpfile.isEmpty()){
-            return new Response(500,"文件上传失败",null);
-        }
-        //文件名=当前时间到毫秒+原来的文件名
-        String fileName=System.currentTimeMillis()+mpfile.getOriginalFilename();
-        //文件路径
-        String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"songPic";
-        //如果文件路径不存在，新增该路径
-        File file=new File(filePath);
-        if(!file.exists()){
-            file.mkdir();
-        }
-        //实际的文件地址
-        File dest=new File(filePath+System.getProperty("file.separator")+fileName);
-        //存储到数据库里相对的文件地址
-        String storeAvatorPath="/songPic/"+fileName;
-        try {
-            mpfile.transferTo(dest);
-            song.setUrl(storeAvatorPath);
-            boolean insert = songService.insert(song);
-            if(insert){
-                return new Response(200,"文件上传成功",storeAvatorPath);
-            }else{
-                return new Response(500,"文件上传失败",null);
-            }
-        } catch (IOException e) {
-            return new Response(500,"文件上传失败"+e.getMessage(),null);
-        }
-    }*/
-
-
     @PostMapping("/addSong")
     public Response addSong(HttpServletRequest request, @RequestParam("file")MultipartFile mpfile){
         if(mpfile.isEmpty()){
@@ -153,13 +120,66 @@ public class SongController {
         File dest=new File(filePath+System.getProperty("file.separator")+fileName);
         //存储到数据库里相对的文件地址
         String storeAvatorPath="/img/songPic/"+fileName;
+        Song song = songService.selectById(id);
+        String oldAvatorUrl = song.getPic();
+        if (oldAvatorUrl!=null) {
+            String subUrl = oldAvatorUrl.substring(13);
+            String oldFilePath = System.getProperty("user.dir") + System.getProperty("file.separator") + "img"
+                    + System.getProperty("file.separator") + "songPic" + System.getProperty("file.separator") + subUrl;
+            File file1 = new File(oldFilePath);
+            file1.delete();
+        }
         try {
             avatorFile.transferTo(dest);
-            Song song = songService.selectById(id);
             song.setPic(storeAvatorPath);
             boolean i = songService.update(song);
             if(i){
                 return new Response(200,"文件上传成功",storeAvatorPath);
+            }else{
+                return new Response(500,"文件上传失败",null);
+            }
+        } catch (IOException e) {
+            return new Response(500,"文件上传失败"+e.getMessage(),null);
+        }
+    }
+
+
+    /**
+     * 更新歌曲
+     */
+    @PostMapping(value="/updateSongSource")
+    public Response updateSongSource(@RequestParam("file")MultipartFile songSourceFile,@RequestParam("id")int id){
+        if(songSourceFile.isEmpty()){
+            return new Response(500,"文件上传失败",null);
+        }
+        //文件名=当前时间到毫秒+原来的文件名
+        String fileName=System.currentTimeMillis()+songSourceFile.getOriginalFilename();
+        //文件路径
+        String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"song";
+        //如果文件路径不存在，新增该路径
+        File file=new File(filePath);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        //实际的文件地址
+        File dest=new File(filePath+System.getProperty("file.separator")+fileName);
+        //存储到数据库里相对的文件地址
+        String storeSongSourcePath="/song/"+fileName;
+        Song song = songService.selectById(id);
+        String url = song.getUrl();
+        //删除原来服务器上的文件
+        if(url!=null){
+        String subUrl = url.substring(6);
+        String oldFilePath=System.getProperty("user.dir")+System.getProperty("file.separator")+"song"+System.getProperty("file.separator")+subUrl;
+        File file1=new File(oldFilePath);
+        file1.delete();
+        }
+        try {
+            songSourceFile.transferTo(dest);
+            song.setUrl(storeSongSourcePath);
+            boolean flag = songService.update(song);
+            if(flag){
+                return new Response(200,"文件上传成功",storeSongSourcePath);
             }else{
                 return new Response(500,"文件上传失败",null);
             }

@@ -150,9 +150,18 @@ public class SingerController {
         File dest=new File(filePath+System.getProperty("file.separator")+fileName);
         //存储到数据库里相对的文件地址
         String storeAvatorPath="/img/singerPic/"+fileName;
+        Singer singer = singerService.selectById(id);
+        String pic = singer.getPic();
+        if(pic!=null){
+            String subUrl = pic.substring(14);
+            String oldFilePath = System.getProperty("user.dir") + System.getProperty("file.separator") + "img"
+                    + System.getProperty("file.separator") + "singerPic" + System.getProperty("file.separator") + subUrl;
+            File file1 = new File(oldFilePath);
+            file1.delete();
+        }
         try {
             avatorFile.transferTo(dest);
-            Singer singer = singerService.selectById(id);
+
             singer.setPic(storeAvatorPath);
             int i = singerService.update(singer);
             if(i!=0){

@@ -39,7 +39,7 @@ public class SingerController {
         }else{
             return new Response(500,"保存失败",null);
         }
-        }
+    }
 
         /**
          * 更新歌手

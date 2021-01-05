@@ -1,6 +1,7 @@
 package com.example.music;
 
 import com.example.music.Entity.Singer;
+import com.example.music.Mapper.SingerMapper;
 import com.example.music.Service.SingerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,10 @@ import java.util.List;
 class MusicApplicationTests {
     @Autowired
     SingerService singerService;
+
     @Test
     void contextLoads() {
-        System.out.println(singerService.selectAllSinger());
+
     }
 
 }

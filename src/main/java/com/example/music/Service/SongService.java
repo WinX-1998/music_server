@@ -28,6 +28,11 @@ public interface SongService {
     public boolean delete(Integer id);
 
     /**
+     * 批量删除歌曲
+     */
+    public boolean deleteByIds(List<Integer> ids);
+
+    /**
      * 根据主键查询整个对象
      */
     public Song selectById(Integer id);

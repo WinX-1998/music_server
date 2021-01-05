@@ -1,5 +1,7 @@
 package com.example.music.Entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class Song {
     /*主键*/
+    @TableId(type = IdType.AUTO)
     private Integer id;
     //歌手id
     private Integer singerId;

@@ -55,6 +55,16 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public boolean deleteByIds(List<Integer> ids) {
+        int i = songMapper.deleteBatchIds(ids);
+        if(i!=0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
     public Song selectById(Integer id) {
         return songMapper.selectById(id);
 

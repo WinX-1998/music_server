@@ -67,7 +67,6 @@ public class SongServiceImpl implements SongService {
     @Override
     public Song selectById(Integer id) {
         return songMapper.selectById(id);
-
     }
 
     @Override
@@ -95,7 +94,7 @@ public class SongServiceImpl implements SongService {
     @Override
     public List<Song> selectBySingerId(Integer singerId) {
         Map map=new HashMap();
-        map.put("singeId",singerId);
+        map.put("singer_id",singerId);
         List list = songMapper.selectByMap(map);
         return list;
     }

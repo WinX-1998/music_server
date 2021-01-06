@@ -50,15 +50,18 @@ public class SongController {
         File dest=new File(filePath+System.getProperty("file.separator")+fileName);
         //存储到数据库里相对的文件地址
         String storeAvatorPath="/song/"+fileName;
+        String singerId=request.getParameter("singerId");
         String name = request.getParameter("name");
         String introduction = request.getParameter("introduction");
         String lyric = request.getParameter("lyric");
         Song song=new Song();
+        song.setSingerId(Integer.parseInt(singerId));
         song.setName(name);
         song.setIntroduction(introduction);
         song.setLyric(lyric);
         song.setCreateTime(new Date());
         song.setUpdateTime(new Date());
+        song.setPic("/img/songPic/avatar.jpg");
         try {
             mpfile.transferTo(dest);
             song.setUrl(storeAvatorPath);
@@ -77,6 +80,16 @@ public class SongController {
     @GetMapping("/selectAllSongs")
     public List<Song> selectAllSongs(){
         return songService.selectAllSongs();
+    }
+
+
+    @GetMapping("/selectSongsBySingerId/{singerId}")
+    public List<Song>selectSongsBySingerId(@PathVariable("singerId")String singerId){
+        if (singerId!=null) {
+            return songService.selectBySingerId(Integer.parseInt(singerId));
+        }
+        return null;
+
     }
 
     /**

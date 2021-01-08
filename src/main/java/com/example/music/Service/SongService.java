@@ -48,6 +48,11 @@ public interface SongService {
     public List<Song> selectByName(String name);
 
     /**
+     * 根据歌手加歌名精确查询列表
+     */
+    public Song selectByFullName(String fullName);
+
+    /**
      * 根据歌名模糊查询列表
      */
     public List<Song> selectByLikeName(String name);

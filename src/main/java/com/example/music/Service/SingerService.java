@@ -48,6 +48,7 @@ public interface SingerService {
      */
     public List<Singer> selectByLikeName(String name);
 
+
     /**
      * 根据性别查询
      */

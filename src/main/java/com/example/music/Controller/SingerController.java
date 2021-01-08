@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,11 +83,17 @@ public class SingerController {
     /**
      * 根据歌手名字模糊查询列表
      */
-    @GetMapping("/selectSingerByName")
-    public List<Singer> selectSingerByName(@RequestParam("name")String name){
-        List<Singer> singers = singerService.selectByLikeName(name);
-        return singers;
+    @GetMapping("/selectSingerByName/{name}")
+    public Response selectSingerByName(@PathVariable("name")String name){
+        String queryName = URLDecoder.decode(name);
+        List<Singer> singers = singerService.selectByLikeName(queryName);
+        if(!singers.isEmpty()){
+            return new Response(200,"success",singers);
+        }else{
+            return new Response(500,"fail",null);
+        }
     }
+
 
     /**
      * 根据性别查询

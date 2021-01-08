@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.music.Entity.Song;
 import com.example.music.Mapper.SongMapper;
 import com.example.music.Service.SongService;
+import com.example.music.VO.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +82,14 @@ public class SongServiceImpl implements SongService {
         map.put("name",name);
         List list = songMapper.selectByMap(map);
         return list;
+    }
+
+    @Override
+    public Song selectByFullName(String fullName) {
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq("full_name",fullName);
+        Song song = songMapper.selectOne(queryWrapper);
+        return song;
     }
 
     @Override

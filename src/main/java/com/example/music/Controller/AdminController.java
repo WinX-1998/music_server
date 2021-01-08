@@ -1,22 +1,16 @@
 package com.example.music.Controller;
 
-import com.example.music.Entity.User;
-import com.example.music.Service.UserService;
-import com.example.music.VO.Response;
-import com.example.music.VO.UserInfo;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
+import com.example.music.Entity.Admin;
+import com.example.music.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/admin")
+public class AdminController {
 
     @Autowired
-    private UserService userService;
+    private AdminService adminService;
 
    /* @PostMapping("/login")
     public Response login(@RequestBody User user){
@@ -37,10 +31,10 @@ public class UserController {
 
 
    @PostMapping("/login")
-   public String login(@RequestBody User user){
-       String username = user.getUsername();
-       User userQuery = userService.findUserByUsername(username);
-       if(userQuery!=null){
+   public String login(@RequestBody Admin admin){
+       String adminName = admin.getAdminName();
+       Admin adminQuery = adminService.findAdminByAdminName(adminName);
+       if(adminQuery !=null){
            return "success";
        }else{
            return "failure";

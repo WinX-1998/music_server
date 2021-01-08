@@ -3,6 +3,7 @@ package com.example.music.Controller;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.example.music.Entity.Singer;
 import com.example.music.Entity.Song;
+import com.example.music.Service.SingerService;
 import com.example.music.Service.SongService;
 import com.example.music.VO.Response;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +32,8 @@ import java.util.List;
 public class SongController {
     @Autowired
     private SongService songService;
+    @Autowired
+    private SingerService singerService;
 
     @PostMapping("/addSong")
     public Response addSong(HttpServletRequest request, @RequestParam("file")MultipartFile mpfile){
@@ -55,6 +58,11 @@ public class SongController {
         String introduction = request.getParameter("introduction");
         String lyric = request.getParameter("lyric");
         Song song=new Song();
+        if(singerId!=null) {
+            Singer singer = singerService.selectById(Integer.parseInt(singerId));
+            String fullName=singer.getName()+"-"+name;
+            song.setFullName(fullName);
+        }
         song.setSingerId(Integer.parseInt(singerId));
         song.setName(name);
         song.setIntroduction(introduction);
@@ -84,13 +92,36 @@ public class SongController {
 
 
     @GetMapping("/selectSongsBySingerId/{singerId}")
-    public List<Song>selectSongsBySingerId(@PathVariable("singerId")String singerId){
+    public Response selectSongsBySingerId(@PathVariable("singerId")String singerId){
         if (singerId!=null) {
-            return songService.selectBySingerId(Integer.parseInt(singerId));
+            List<Song> songs = songService.selectBySingerId(Integer.parseInt(singerId));
+            return new Response(200,"success",songs);
+        }else{
+            return new Response(500,"fail",null);
         }
-        return null;
-
     }
+
+
+
+    @GetMapping("/selectSongById/{id}")
+    public Song selectSongById(@PathVariable("id")String id){
+        if(id!=null){
+            return songService.selectById(Integer.parseInt(id));
+        }else{
+            return null;
+        }
+    }
+
+    @GetMapping("/selectSongByLikeName/{name}")
+    public Response selectSongByLikeName(@PathVariable("name")String name){
+        List<Song> songs = songService.selectByLikeName(name);
+        if(!songs.isEmpty()){
+            return new Response(200,"success",songs);
+        }else{
+            return new Response(500,"fail",null);
+        }
+    }
+
 
     /**
      * 更新歌曲

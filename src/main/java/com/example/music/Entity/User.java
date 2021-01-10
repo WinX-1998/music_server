@@ -1,5 +1,9 @@
 package com.example.music.Entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +22,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class User {
     /*主键*/
+    @TableId(type = IdType.AUTO)
     private Integer id;
     /*账号*/
     private String username;
@@ -30,6 +35,7 @@ public class User {
     /*电子邮箱*/
     private String email;
     /*生日*/
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birth;
     /*签名*/
     private String introduction;
@@ -38,7 +44,9 @@ public class User {
     /*头像*/
     private String avator;
     /*创建时间*/
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
     /*更新时间*/
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date updateTime;
 }

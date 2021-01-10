@@ -29,7 +29,7 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = authenticationToken.getPrincipal().toString();
-        Admin admin = adminService.findUserByUsername(username);
+        Admin admin = adminService.findAdminByAdminName(username);
         String password = admin.getPassword();
         String salt = admin.getSalt();
         SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(username, password, ByteSource.Util.bytes(salt), getName());

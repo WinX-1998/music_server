@@ -81,6 +81,14 @@ public class SingerController {
 
 
     /**
+     *  查找前十个歌手
+     */
+    @GetMapping("/selectTenSingers")
+    public List<Singer> selectTenSingers(){
+        return singerService.selectTenSingers();
+    }
+
+    /**
      * 根据歌手名字模糊查询列表
      */
     @GetMapping("/selectSingerByName/{name}")

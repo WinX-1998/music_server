@@ -43,6 +43,11 @@ public interface SongService {
     public List<Song> selectAllSongs();
 
     /**
+     * 查询前十条歌曲
+     */
+    public List<Song> selectTenSongs();
+
+    /**
      * 根据歌名精确查询列表
      */
     public List<Song> selectByName(String name);

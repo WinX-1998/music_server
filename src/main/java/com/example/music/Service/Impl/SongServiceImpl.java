@@ -77,6 +77,14 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public List<Song> selectTenSongs() {
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.last("limit 0,10");
+        List list = songMapper.selectList(queryWrapper);
+        return list;
+    }
+
+    @Override
     public List<Song> selectByName(String name) {
         Map map=new HashMap<String,Object>();
         map.put("name",name);

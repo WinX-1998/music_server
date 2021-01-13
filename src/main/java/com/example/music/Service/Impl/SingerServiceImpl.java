@@ -66,6 +66,14 @@ public class SingerServiceImpl implements SingerService {
     }
 
     @Override
+    public List<Singer> selectTenSingers() {
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.last("limit 0,10");
+        List list = singerMapper.selectList(queryWrapper);
+        return list;
+    }
+
+    @Override
     public List<Singer> selectByLikeName(String name) {
         QueryWrapper<Singer>queryWrapper=new QueryWrapper<Singer>();
         queryWrapper.like("name", name);

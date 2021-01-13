@@ -90,6 +90,10 @@ public class SongController {
         return songService.selectAllSongs();
     }
 
+    @GetMapping("/selectTenSongs")
+    public List<Song>selectTenSongs(){
+        return songService.selectTenSongs();
+    }
 
     @GetMapping("/selectSongsBySingerId/{singerId}")
     public Response selectSongsBySingerId(@PathVariable("singerId")String singerId){
@@ -113,13 +117,8 @@ public class SongController {
     }
 
     @GetMapping("/selectSongByLikeName/{name}")
-    public Response selectSongByLikeName(@PathVariable("name")String name){
-        List<Song> songs = songService.selectByLikeName(name);
-        if(!songs.isEmpty()){
-            return new Response(200,"success",songs);
-        }else{
-            return new Response(500,"fail",null);
-        }
+    public List<Song> selectSongByLikeName(@PathVariable("name")String name){
+        return songService.selectByLikeName(name);
     }
 
 

@@ -43,6 +43,13 @@ public interface SingerService {
      */
     public List<Singer> selectAllSinger();
 
+
+    /**
+     * 查询前十个歌手
+     */
+    public List<Singer> selectTenSingers();
+
+
     /**
      * 根据歌手名字模糊查询列表
      */

@@ -79,6 +79,15 @@ public class SongListServiceImpl implements SongListService {
     }
 
     @Override
+    public List<SongList> selectTenSongLists() {
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.last(" limit 0 , 10");
+        List list = songListMapper.selectList(queryWrapper);
+        return list;
+    }
+
+
+    @Override
     public List<SongList> songListOfTitle(String title) {
         QueryWrapper queryWrapper=new QueryWrapper();
         queryWrapper.eq("title",title);

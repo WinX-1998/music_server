@@ -45,6 +45,12 @@ public class SongListController {
        return songListService.selectAllSongList();
     }
 
+    @GetMapping("/selectTenSongLists")
+    public List<SongList>selectTenSongLists(){
+        List<SongList> songLists = songListService.selectTenSongLists();
+        return songLists;
+    }
+
     @PostMapping("/updateSongList")
     public Response updateSongList(@RequestBody SongList songList){
         if(songList.getId()!=null) {

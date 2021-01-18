@@ -28,6 +28,8 @@ public class User {
     private String username;
     /*密码*/
     private String password;
+    /*盐*/
+    private String salt;
     /*性别*/
     private Integer sex;
     /*手机号*/

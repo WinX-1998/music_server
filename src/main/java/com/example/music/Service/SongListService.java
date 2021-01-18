@@ -49,6 +49,10 @@ public interface SongListService {
     public List<SongList> selectAllSongList();
 
     /**
+     * 查询前十条歌单
+     */
+    public List<SongList>selectTenSongLists();
+    /**
      * 根据标题精确查询歌单列表
      */
     public List<SongList> songListOfTitle(String title);

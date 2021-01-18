@@ -1,9 +1,15 @@
 package com.example.music.Controller;
 
-import com.example.music.Entity.Singer;
 import com.example.music.Entity.User;
 import com.example.music.Service.UserService;
 import com.example.music.VO.Response;
+import com.example.music.VO.UserInfo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +37,17 @@ public class UserController {
 
     @PostMapping("/add")
     public Response addUser(@RequestBody User user){
+        String username = user.getUsername();
+        if(userService.selectByUserName(username)!=null){
+            return new Response(500,"该名字已被使用",null);
+        }
+        String password = user.getPassword();
+        String salt=new SecureRandomNumberGenerator().nextBytes().toString();
+        int times=2;
+        String algorithm="md5";
+        String pwdAfterHash=new SimpleHash(algorithm,password,salt,times).toString();
+        user.setPassword(pwdAfterHash);
+        user.setSalt(salt);
         user.setAvator("/img/userPic/UserAvatar.jpg");
         Date date=new Date();
         user.setCreateTime(date);
@@ -41,6 +57,27 @@ public class UserController {
             return new Response(200, "保存成功", null);
         }else{
             return new Response(500,"保存失败",null);
+        }
+    }
+
+    /**
+     * 用户登录
+     */
+    @PostMapping("/login")
+    public Response Login(@RequestBody User user) {
+        String username = user.getUsername();
+        String password = user.getPassword();
+        User userQuery = userService.selectByUserName(username);
+        Integer id = userQuery.getId();
+        String avator = userQuery.getAvator();
+        System.out.println(id);
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
+        try {
+            subject.login(usernamePasswordToken);
+            return new Response(200, "success", new UserInfo(id,username,avator));
+        } catch (AuthenticationException e) {
+            return new Response(500, "failure", null);
         }
     }
 

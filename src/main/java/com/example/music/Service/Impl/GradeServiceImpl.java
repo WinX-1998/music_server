@@ -1,15 +1,13 @@
 package com.example.music.Service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.music.Entity.Rank;
-import com.example.music.Mapper.RankMapper;
-import com.example.music.Service.RankService;
+import com.example.music.Entity.Grade;
+import com.example.music.Mapper.GradeMapper;
+import com.example.music.Service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,14 +17,14 @@ import java.util.Map;
  * @Description:
  */
 @Service
-public class RankServiceImpl implements RankService {
+public class GradeServiceImpl implements GradeService {
 
     @Autowired
-    private RankMapper rankMapper;
+    private GradeMapper gradeMapper;
 
     @Override
-    public boolean insert(Rank rank) {
-        int insert = rankMapper.insert(rank);
+    public boolean insert(Grade grade) {
+        int insert = gradeMapper.insert(grade);
         if(insert!=0){
             return true;
         }else {
@@ -36,14 +34,14 @@ public class RankServiceImpl implements RankService {
 
     @Override
     public int selectScoreSum(Integer songListId) {
-        return rankMapper.selectScoreSum(songListId);
+        return gradeMapper.selectScoreSum(songListId);
     }
 
     @Override
-    public int selectRankNum(Integer songListId) {
+    public int selectGradeNum(Integer songListId) {
         QueryWrapper queryWrapper=new QueryWrapper();
         queryWrapper.eq("song_list_id",songListId);
-        List list = rankMapper.selectList(queryWrapper);
+        List list = gradeMapper.selectList(queryWrapper);
         if(list!=null){
             return list.size();
         }else {
@@ -52,12 +50,12 @@ public class RankServiceImpl implements RankService {
     }
 
     @Override
-    public int rankOfSongListId(Integer songListId) {
-        int sum = rankMapper.selectScoreSum(songListId);
+    public int gradeOfSongListId(Integer songListId) {
+        int sum=gradeMapper.selectScoreSum(songListId);
         QueryWrapper queryWrapper=new QueryWrapper();
         queryWrapper.eq("song_list_id",songListId);
-        List list = rankMapper.selectList(queryWrapper);
-        if(list!=null){
+        List list = gradeMapper.selectList(queryWrapper);
+        if(list.size()!=0){
               return sum/list.size();
         }else {
             return 0;

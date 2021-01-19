@@ -1,6 +1,6 @@
 package com.example.music.Service;
 
-import com.example.music.Entity.Rank;
+import com.example.music.Entity.Grade;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,11 +9,11 @@ import com.example.music.Entity.Rank;
  * @Date: 2021/01/18/21:49
  * @Description:
  */
-public interface RankService {
+public interface GradeService {
     /**
      *增加
      */
-    public boolean insert(Rank rank);
+    public boolean insert(Grade grade);
 
     /**
      * 查总分
@@ -23,10 +23,10 @@ public interface RankService {
     /**
      * 查总评分人数
      */
-    public int selectRankNum(Integer songListId);
+    public int selectGradeNum(Integer songListId);
 
     /**
      * 计算平均分
      */
-    public int rankOfSongListId(Integer songListId);
+    public int gradeOfSongListId(Integer songListId);
 }

@@ -1,7 +1,7 @@
 package com.example.music.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.music.Entity.Rank;
+import com.example.music.Entity.Grade;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -14,8 +14,8 @@ import org.apache.ibatis.annotations.Select;
  * @Description:
  */
 @Mapper
-public interface RankMapper extends BaseMapper<Rank> {
+public interface GradeMapper extends BaseMapper<Grade> {
 
-    @Select("select COALESCE(count(score),0)as score from rank where song_list_id=#{songListId}")
+    @Select("select COALESCE(sum(score),0) as score from grade where song_list_id=#{songListId}")
     public int selectScoreSum(@Param("songListId") Integer songListId);
 }

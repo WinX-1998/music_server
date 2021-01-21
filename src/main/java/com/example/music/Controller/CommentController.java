@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,7 +26,23 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/addComment")
-    public Response addComment(@RequestBody Comment comment){
+    public Response addComment(HttpServletRequest request){
+        String songId = request.getParameter("songId");
+        String songListId=request.getParameter("songListId");
+        String userId = request.getParameter("userId");
+        String type = request.getParameter("type");
+        String content = request.getParameter("content").trim();
+        Date date=new Date();
+        Comment comment=new Comment();
+        if(Integer.parseInt(type)==0){
+            comment.setSongId(Integer.parseInt(songId));
+        }else{
+            comment.setSongListId(Integer.parseInt(songListId));
+        }
+        comment.setUserId(Integer.parseInt(userId));
+        comment.setContent(content);
+        comment.setCreateTime(date);
+        comment.setType(Integer.parseInt(type));
         boolean flag = commentService.insert(comment);
         if(flag){
             return new Response(200,"评论成功",null);
@@ -108,7 +125,24 @@ public class CommentController {
     }
 
 
+    /**
+     * 给某个评论点赞
+     */
+    @PostMapping("/like")
+    public Response like(HttpServletRequest request){
+        String id = request.getParameter("id").trim();
+        String up = request.getParameter("up").trim();
+        //保存到评论的对象中
+        Comment comment = new Comment();
+        comment.setId(Integer.parseInt(id));
+        comment.setUp(Integer.parseInt(up));
 
-
+        boolean flag = commentService.update(comment);
+        if(flag){
+           return new Response(200,"保存成功",null);
+        } else{
+          return new Response(500,"保存失败",null);
+        }
+    }
 
 }

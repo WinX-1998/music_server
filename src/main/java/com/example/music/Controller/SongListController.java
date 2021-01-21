@@ -51,6 +51,20 @@ public class SongListController {
         return songLists;
     }
 
+    @GetMapping("/selectSongListsLikeTitle/{query}")
+    public List<SongList>selectSongListsLikeTitle(@PathVariable("query")String query){
+        List<SongList> songLists = songListService.likeTitle(query);
+        return songLists;
+    }
+
+    @GetMapping("/selectSongListsByStyle/{query}")
+    public List<SongList>selectSongListsByStyle(@PathVariable("query")String query){
+        List<SongList> songLists = songListService.likeStyle(query);
+        return songLists;
+    }
+
+
+
     @PostMapping("/updateSongList")
     public Response updateSongList(@RequestBody SongList songList){
         if(songList.getId()!=null) {

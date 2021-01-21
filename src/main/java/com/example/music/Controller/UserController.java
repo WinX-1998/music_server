@@ -104,8 +104,8 @@ public class UserController {
     /**
      *  根据主键查询用户
      */
-    @PostMapping("/selectUserById")
-    public User selectUserById(@RequestParam("id") String id){
+    @GetMapping("/selectUserById/{id}")
+    public User selectUserById(@PathVariable("id") String id){
         int queryId = Integer.parseInt(id);
         User user = userService.selectByPrimaryKey(queryId);
         return user;
@@ -118,6 +118,7 @@ public class UserController {
     public List<User> selectAllUser(){
         return userService.selectAllUser();
     }
+
 
 
     @GetMapping("/selectUserCreateOnYear")

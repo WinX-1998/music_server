@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -106,8 +107,8 @@ public class SingerController {
     /**
      * 根据性别查询
      */
-    @GetMapping("/selectSingerBySex")
-    public List<Singer> selectSingerBySex(@RequestParam("sex")String sex){
+    @GetMapping("/selectSingerBySex/{sex}")
+    public List<Singer> selectSingerBySex(@PathVariable("sex") String sex){
         int querySex = Integer.parseInt(sex);
         List<Singer> singers = singerService.selectBySex(querySex);
         return singers;

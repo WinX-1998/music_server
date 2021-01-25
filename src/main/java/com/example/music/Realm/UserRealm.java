@@ -23,7 +23,7 @@ public class UserRealm extends AuthorizingRealm {
     //授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        System.out.println("正在授权");
+        System.out.println("用户正在授权");
         return null;
     }
 

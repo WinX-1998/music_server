@@ -66,6 +66,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean changeIsVip(Integer id, Boolean isVip) {
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq("id",id);
+        User user = userMapper.selectById(id);
+        user.setIsVip(isVip);
+        int i = userMapper.updateById(user);
+        if(i!=0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
     public User selectByPrimaryKey(Integer id) {
         return userMapper.selectById(id);
     }

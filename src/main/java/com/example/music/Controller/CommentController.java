@@ -1,13 +1,17 @@
 package com.example.music.Controller;
 
 import com.example.music.Entity.Comment;
+import com.example.music.Entity.User;
 import com.example.music.Service.CommentService;
+import com.example.music.Service.UserService;
+import com.example.music.VO.CommentInfo;
 import com.example.music.VO.Response;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +28,9 @@ public class CommentController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/addComment")
     public Response addComment(HttpServletRequest request){
@@ -78,6 +85,22 @@ public class CommentController {
         }
     }
 
+    @GetMapping("/deleteComments/{ids}")
+    public Response deleteComments(@PathVariable("ids")String ids){
+        String[] split = ids.split(",");
+        List<Integer>list=new ArrayList<Integer>();
+        for(int i=0;i<split.length;i++){
+            int parseInt = Integer.parseInt(split[i]);
+            list.add(parseInt);
+        }
+        boolean flag = commentService.deleteComments(list);
+        if(flag){
+            return new Response(200,"删除成功",null);
+        }else{
+            return new Response(500,"删除失败",null);
+        }
+    }
+
 
     @GetMapping("/selectCommentById/{id}")
     public Response selectCommentById(@PathVariable("id")String id){
@@ -87,6 +110,12 @@ public class CommentController {
         }else{
             return new Response(500,"查找失败",null);
         }
+    }
+
+    @GetMapping("/selectCommentsBySongId/{id}")
+    public List<Comment>selectCommentsBySongId(@PathVariable("id")String id){
+        List<Comment> comments = commentService.selectBySongId(Integer.parseInt(id));
+        return comments;
     }
 
     /**
@@ -115,10 +144,22 @@ public class CommentController {
      * 查询某个歌单下的所有评论
      */
     @GetMapping(value = "/selectCommentBySongListId/{id}")
-    public List<Comment> selectCommentBySongListId(@PathVariable("id")String songListId){
+    public List<CommentInfo> selectCommentBySongListId(@PathVariable("id")String songListId){
         if(!songListId.isEmpty()) {
             List<Comment> comments = commentService.commentOfSongListId(Integer.parseInt(songListId));
-            return comments;
+            List<CommentInfo>list=new ArrayList<>();
+            for(Comment comment:comments){
+                CommentInfo commentInfo=new CommentInfo();
+                User user = userService.selectByPrimaryKey(comment.getUserId());
+                commentInfo.setUserId(user.getId());
+                commentInfo.setUsername(user.getUsername());
+                commentInfo.setContent(comment.getContent());
+                commentInfo.setCommentId(comment.getId());
+                commentInfo.setCreateTime(comment.getCreateTime());
+                commentInfo.setUp(comment.getUp());
+                list.add(commentInfo);
+            }
+            return list;
         }else{
             return null;
         }
@@ -130,7 +171,7 @@ public class CommentController {
      */
     @PostMapping("/like")
     public Response like(HttpServletRequest request){
-        String id = request.getParameter("id").trim();
+        String id = request.getParameter("id").trim(); //评论主键
         String up = request.getParameter("up").trim();
         //保存到评论的对象中
         Comment comment = new Comment();

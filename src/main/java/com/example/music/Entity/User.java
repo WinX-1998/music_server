@@ -36,6 +36,8 @@ public class User {
     private String phoneNum;
     /*电子邮箱*/
     private String email;
+    /*是否会员*/
+    private Boolean isVip;
     /*生日*/
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birth;

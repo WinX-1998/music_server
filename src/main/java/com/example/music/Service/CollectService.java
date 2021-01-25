@@ -28,6 +28,14 @@ public interface CollectService {
      */
     public boolean deleteByUserIdSongId(Integer userId, Integer songId);
 
+
+    /**
+     * 根据用户id和歌曲id列表删除
+     */
+    public boolean deleteCollectionsByUserId(Integer userId,List<Integer>ids);
+
+
+
     /**
      * 根据用户id和歌单id删除
      */
@@ -42,6 +50,11 @@ public interface CollectService {
      * 查询某个用户的收藏列表
      */
     public List<Collect> collectOfUserId(Integer userId);
+
+    /**
+     * 查询某个用户的收藏列表
+     */
+    public Collect selectCollectionByUserIdAndSongId(Integer userId,Integer songId);
 
     /**
      * 查询某个用户是否已经收藏了某个歌曲

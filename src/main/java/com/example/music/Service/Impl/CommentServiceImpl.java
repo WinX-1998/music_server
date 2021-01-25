@@ -60,6 +60,32 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<Comment> selectBySongId(Integer songId) {
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq("song_id",songId);
+        List list = commentMapper.selectList(queryWrapper);
+        return list;
+    }
+
+    @Override
+    public List<Comment> selectBySongListId(Integer songListId) {
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq("song_list_id",songListId);
+        List list = commentMapper.selectList(queryWrapper);
+        return list;
+    }
+
+    @Override
+    public boolean deleteComments(List<Integer> ids) {
+        int i = commentMapper.deleteBatchIds(ids);
+        if(i!=0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
     public List<Comment> allComment() {
         List<Comment> comments = commentMapper.selectList(null);
         return comments;

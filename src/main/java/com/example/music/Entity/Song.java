@@ -41,4 +41,6 @@ public class Song {
     private String lyric;
     /*歌曲地址*/
     private String url;
+    /*是否只有会员可听*/
+    private boolean isVip;
 }

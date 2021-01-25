@@ -37,6 +37,22 @@ public interface CommentService {
     public Comment selectByPrimaryKey(Integer id);
 
     /**
+     * 根据主键查询整个对象
+     */
+    public  List<Comment> selectBySongId(Integer songId);
+
+    /**
+     * 根据歌单id查询评论
+     */
+    public  List<Comment> selectBySongListId(Integer songListId);
+
+
+    /**
+     * 批量删除评论
+     */
+    public boolean deleteComments(List<Integer>ids);
+
+    /**
      * 查询所有评论
      */
     public List<Comment> allComment();

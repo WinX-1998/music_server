@@ -12,4 +12,5 @@ public class UserInfo {
     private Integer userId;
     private String username;
     private String avator;
+    private Boolean isVip;
 }

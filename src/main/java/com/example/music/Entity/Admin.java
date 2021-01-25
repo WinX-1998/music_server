@@ -11,11 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Admin {
 
-    private Long id;
+    private Integer id;
     @TableField(value="admin_name")
     private String adminName;
     private String realname;
     private String password;
     private String salt;
-
 }

@@ -23,6 +23,11 @@ public interface SongService {
     public boolean update(Song song);
 
     /**
+     *改变是否为vip可听
+     */
+    public boolean changeIsVip(Integer id,Boolean isVip);
+
+    /**
      * 删除
      */
     public boolean delete(Integer id);

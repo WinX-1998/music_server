@@ -6,8 +6,11 @@ import com.example.music.Mapper.CollectMapper;
 import com.example.music.Service.CollectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,6 +60,23 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
+    @Transactional
+    public boolean deleteCollectionsByUserId(Integer userId,List<Integer>ids) {
+        try {
+            for (Integer id : ids) {
+                QueryWrapper queryWrapper = new QueryWrapper();
+                queryWrapper.eq("user_id", userId);
+                queryWrapper.eq("song_id", id);
+                collectMapper.delete(queryWrapper);
+            }
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+
+    @Override
     public boolean deleteByUserIdSongListId(Integer userId, Integer songListId) {
         QueryWrapper queryWrapper=new QueryWrapper();
         queryWrapper.eq("user_id",userId);
@@ -81,6 +101,15 @@ public class CollectServiceImpl implements CollectService {
         queryWrapper.eq("user_id",userId);
         List list = collectMapper.selectList(queryWrapper);
         return list;
+    }
+
+    @Override
+    public Collect selectCollectionByUserIdAndSongId(Integer userId, Integer songId) {
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq("user_id",userId);
+        queryWrapper.eq("song_id",songId);
+        Collect collect = collectMapper.selectOne(queryWrapper);
+        return collect;
     }
 
     @Override

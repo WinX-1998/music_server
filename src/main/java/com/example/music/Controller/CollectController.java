@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -121,6 +122,37 @@ public class CollectController {
             return new Response(200,"已经收藏",null);
         }else{
             return new Response(500,"未收藏",null);
+        }
+    }
+
+    @PostMapping("/deleteCollectionsById")
+    public Response deleteCollectionsById(HttpServletRequest request){
+        String ids = request.getParameter("ids");
+        String userId = request.getParameter("userId");
+        String[] split = ids.split(",");
+        List list=new ArrayList();
+        for(int i=0;i<split.length;i++){
+            int parseId = Integer.parseInt(split[i]);
+            list.add(parseId);
+        }
+        boolean b = collectService.deleteCollectionsByUserId(Integer.parseInt(userId), list);
+        if(b){
+            return new Response(200,"删除成功",null);
+        }else{
+            return new Response(500,"删除失败",null);
+        }
+    }
+
+    @PostMapping("/deleteCollectById")
+    public Response deleteCollectById(HttpServletRequest request){
+        String userId = request.getParameter("userId");
+        String songId = request.getParameter("songId");
+        Collect collect = collectService.selectCollectionByUserIdAndSongId(Integer.parseInt(userId), Integer.parseInt(songId));
+        boolean delete = collectService.delete(collect.getId());
+        if(delete){
+            return new Response(200,"删除成功",null);
+        }else{
+            return new Response(500,"删除失败",null);
         }
     }
 }

@@ -141,6 +141,24 @@ public class SongController {
         }
     }
 
+    @PostMapping("/changeIsVip")
+    public Response changeIsVip(HttpServletRequest request){
+        String isVip = request.getParameter("isVip");
+        Boolean isVip1=false;
+        if(isVip.equals("true")){
+             isVip1=true;
+        }else{
+             isVip1=false;
+        }
+        String id = request.getParameter("id");
+        boolean flag = songService.changeIsVip(Integer.parseInt(id), isVip1);
+        if(flag){
+            return new Response(200,"状态更新成功",null);
+        }else{
+            return new Response(500,"状态更新失败",null);
+        }
+    }
+
     /**
      * 更新歌曲头像
      */

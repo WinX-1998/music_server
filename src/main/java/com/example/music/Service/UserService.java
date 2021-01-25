@@ -33,6 +33,11 @@ public interface UserService {
      */
     public boolean deleteUsers(List<Integer> ids);
 
+    /**
+     * 更改是否为会员
+     */
+    public boolean changeIsVip(Integer id,Boolean isVip);
+
 
     /**
      * 根据主键查询整个对象

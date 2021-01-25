@@ -46,6 +46,18 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public boolean changeIsVip(Integer id, Boolean isVip) {
+        Song song = songMapper.selectById(id);
+        song.setVip(isVip);
+        int i = songMapper.updateById(song);
+        if(i!=0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
     public boolean delete(Integer id) {
         int i=songMapper.deleteById(id);
         if(i!=0){

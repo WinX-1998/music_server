@@ -8,15 +8,15 @@ package com.example.music.Entity;
  * @Description:
  */
 public enum LoginType {
-    UESR("User"), ADMIN("Admin");
+    USER("User"), ADMIN("Admin");
 
     private String type;
-    private LoginType(String type){
+    LoginType(String type){
         this.type=type;
     }
 
-    @Override
-    public String toString(){
-        return this.type.toString();
+
+    public String getType() {
+        return type;
     }
 }

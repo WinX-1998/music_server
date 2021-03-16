@@ -67,6 +67,23 @@
             <artifactId>shiro-spring</artifactId>
             <version>1.5.3</version>
         </dependency>
+
+        <!--文本编辑的markdown语法转化为html-->
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>0.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-tables</artifactId>
+            <version>0.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark-ext-heading-anchor</artifactId>
+            <version>0.14.0</version>
+        </dependency>
     </dependencies>
 
     <build>

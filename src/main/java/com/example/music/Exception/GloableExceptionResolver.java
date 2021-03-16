@@ -21,7 +21,7 @@ import java.io.PrintWriter;
  * @Date: 2021/01/25/14:21
  * @Description:
  */
-@ControllerAdvice
+
 public class GloableExceptionResolver {
     // 没有权限时抛出的异常
     @ResponseBody

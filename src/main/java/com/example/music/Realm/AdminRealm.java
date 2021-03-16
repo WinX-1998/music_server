@@ -29,7 +29,6 @@ public class AdminRealm extends AuthorizingRealm {
         System.out.println("管理员正在授权");
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         String adminName = (String) principalCollection.getPrimaryPrincipal();
-
         //从数据库查询对象
         Admin adminQuery = adminService.findAdminByAdminName(adminName);
         if(adminQuery==null){

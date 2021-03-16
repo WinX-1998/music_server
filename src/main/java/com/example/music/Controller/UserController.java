@@ -155,20 +155,16 @@ public class UserController {
     /**
      * 根据id删除歌手
      */
+    @RequiresPermissions("user:delete")
     @GetMapping("/deleteUser/{id}")
     public Response deleteUser(@PathVariable(value="id")int id){
-        Subject subject = SecurityUtils.getSubject();
-        if(subject.hasRole("role_user_admin")) {
             boolean flag = userService.delete(id);
             if (flag) {
                 return new Response(200, "删除成功", null);
             } else {
                 return new Response(500, "删除失败", null);
             }
-        }else{
-            return new Response(500, "删除失败", null);
-        }
-    }
+     }
 
     @GetMapping("/deleteUsers/{ids}")
     public Response deleteUsers(@PathVariable(value = "ids")String ids){

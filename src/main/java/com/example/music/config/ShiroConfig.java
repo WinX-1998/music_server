@@ -12,6 +12,7 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,23 +43,26 @@ public class ShiroConfig {
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
+
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-       /* Map filterChainMap=new LinkedHashMap<String,String>();
+     /*   Map filterChainMap=new LinkedHashMap<String,String>();
         filterChainMap.put("/deleteUsers/{ids}","roles[role_user_admin]");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainMap);*/
         return shiroFilterFactoryBean;
     }
 
     @Bean
-    public SecurityManager securityManager() {
+    public SecurityManager securityManager(AdminRealm adminRealm
+            ,UserRealm userRealm
+            ,ModularRealmAuthenticator modularRealmAuthenticator) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setAuthenticator(modularRealmAuthenticator());
+        securityManager.setAuthenticator(modularRealmAuthenticator);
         List<Realm>realms=new ArrayList<Realm>();
-        realms.add(adminRealm());
-        realms.add(userRealm());
+        realms.add(adminRealm);
+        realms.add(userRealm);
         securityManager.setRealms(realms);
         return securityManager;
     }
@@ -76,16 +80,16 @@ public class ShiroConfig {
 
 
     @Bean
-    public UserRealm userRealm() {
+    public UserRealm userRealm(HashedCredentialsMatcher hashedCredentialsMatcher) {
         UserRealm userRealm = new UserRealm();
-        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        userRealm.setCredentialsMatcher(hashedCredentialsMatcher);
         return userRealm;
     }
 
     @Bean
-    public AdminRealm adminRealm() {
+    public AdminRealm adminRealm(HashedCredentialsMatcher hashedCredentialsMatcher) {
         AdminRealm adminRealm = new AdminRealm();
-        adminRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        adminRealm.setCredentialsMatcher(hashedCredentialsMatcher);
         return adminRealm;
     }
 

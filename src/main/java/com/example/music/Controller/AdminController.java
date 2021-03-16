@@ -51,7 +51,7 @@ public class AdminController {
        Integer id = adminQuery.getId();
        System.out.println(id);
        Subject subject = SecurityUtils.getSubject();
-       CustomizedToken customizedToken = new CustomizedToken(adminName, password, LoginType.ADMIN.toString());
+       CustomizedToken customizedToken = new CustomizedToken(adminName, password, LoginType.ADMIN.getType());
        try {
            subject.login(customizedToken);
            boolean role_user_admin = subject.hasRole("role_user_admin");
